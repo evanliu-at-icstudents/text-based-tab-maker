@@ -12,7 +12,7 @@ def clear_screen():
 def create_blank_tab(num_measures, num_ticks):
     tab = {
         "measures": [num_ticks] * num_measures,
-        "strings": [[["-"] * num_ticks for _ in range(6)] for _ in range(num_measures)],
+        "strings": [[["-"] * num_ticks for _ in range(num_strings)] for _ in range(num_measures)],
     }
     return tab
 
@@ -91,6 +91,7 @@ def edit_tab(tab):
 if __name__ == "__main__":
     num_measures = int(input("Enter the number of measures in your tab: "))
     num_ticks = int(input("Enter the number of ticks in each measure: "))
+    num_strings = int(input("Enter the number of strings on your instrument: "))
 
     tab = create_blank_tab(num_measures, num_ticks)
 
