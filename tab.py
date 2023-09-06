@@ -9,7 +9,7 @@ def clear_screen():
     else:
         os.system("clear")
 
-def create_blank_tab(num_measures, num_ticks):
+def create_blank_tab(num_measures, num_ticks, num_strings):
     tab = {
         "measures": [num_ticks] * num_measures,
         "strings": [[["-"] * num_ticks for _ in range(num_strings)] for _ in range(num_measures)],
@@ -24,8 +24,9 @@ def display_measure(tab, measure):
         print(f"{string_num + 1}|{notes_str}|")
     print()
 
-def export_tab_to_text_file(tab, filename):
+def export_tab_to_text_file(tab, title, filename):
     with open(filename, "w") as file:
+        file.write(f"{title}\n\n")
         for measure_num, measure in enumerate(tab["strings"]):
             file.write(f"Measure {measure_num + 1} / {len(tab['measures'])}:\n")
             for string_num, notes in enumerate(measure):
@@ -33,7 +34,7 @@ def export_tab_to_text_file(tab, filename):
                 file.write(f"{string_num + 1}|{notes_str}|\n")
             file.write("\n")
 
-        print(f"Tab exported to {filename}")
+    print(f"Tab exported to {filename} with the title: {title}")
 
 def edit_tab(tab):
     current_measure = 0
@@ -58,7 +59,7 @@ def edit_tab(tab):
             string_num = int(input("Enter the string number (1-6) to edit: ")) - 1
             position = int(input(f"Enter the position in the measure (1-{tab['measures'][measure]}) for string {string_num + 1}: ")) - 1
             note = input("Enter the note: ")
-            if 0 <= string_num < 6 and 0 <= position < tab["measures"][measure]:
+            if 0 <= string_num < num_strings and 0 <= position < tab["measures"][measure]:
                 tab["strings"][measure][string_num][position] = note
         elif choice == "2":
             if current_measure < num_measures - 1:
@@ -81,8 +82,9 @@ def edit_tab(tab):
             except FileNotFoundError:
                 print(f"File {filename} not found.")
         elif choice == "6":
+            title = input("Enter the title for the tab: ")
             filename = input("Enter the filename to export to: ")
-            export_tab_to_text_file(tab, filename)
+            export_tab_to_text_file(tab, title, filename)
         elif choice == "7":
             break
         else:
@@ -93,6 +95,6 @@ if __name__ == "__main__":
     num_ticks = int(input("Enter the number of ticks in each measure: "))
     num_strings = int(input("Enter the number of strings on your instrument: "))
 
-    tab = create_blank_tab(num_measures, num_ticks)
+    tab = create_blank_tab(num_measures, num_ticks, num_strings)
 
     edit_tab(tab)
